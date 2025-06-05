@@ -1,42 +1,35 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* src/App.css */
+
+/* Establecemos el contenedor principal */
+.container {
+  display: flex; /* Usamos Flexbox */
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  width: 100%; /* Ocupa todo el ancho disponible */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* El primer div (lado izquierdo) */
+.left-side {
+  flex: 0.1; /* Ocupa el 50% del espacio */
+  padding: 20px;
+  overflow: auto;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* El segundo div (lado derecho) */
+.right-side {
+  flex: 1; /* Ocupa el 50% del espacio */
+  padding: 20px;
+  background-color: #3c6ac0; /* Puedes ponerle un color de fondo si lo deseas */
+  overflow: auto;
+}
+/* Contenedor del DanfoExample */
+.danfo-wrapper {
+  flex-grow: 1; /* ocupa el espacio vertical disponible */
+  margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+/* Contenedor para los botones */
+.botonera {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

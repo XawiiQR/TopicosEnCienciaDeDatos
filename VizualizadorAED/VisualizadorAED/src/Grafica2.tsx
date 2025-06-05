@@ -11,72 +11,70 @@ interface PieData {
   label: string;
   value: number;
   color: string;
-  key: string; // Nueva propiedad para identificar el dato
+  key: string;
 }
 
-const Grafica: React.FC<Props> = ({ dataFrame }) => {
+const Grafica2: React.FC<Props> = ({ dataFrame }) => {
   const svgRef1 = useRef<SVGSVGElement>(null);
   const svgRef2 = useRef<SVGSVGElement>(null);
   const legendRef1 = useRef<HTMLDivElement>(null);
   const legendRef2 = useRef<HTMLDivElement>(null);
   const [selectedData, setSelectedData] = useState<{dataFrame: dfd.DataFrame, key: string} | null>(null);
 
-  // Colores consistentes para las categorías
+  // Color scheme for income brackets
   const colors = {
-    white: "#4e79a7",
-    black: "#f28e2b",
-    asian: "#e15759",
-    hispanic: "#76b7b2"
+    under50k: "#4e79a7",
+    fiftyTo100k: "#f28e2b",
+    hundredTo200k: "#e15759",
+    over200k: "#76b7b2"
   };
 
-  // Calcular el total ponderado de cada raza
-  let weightedWhite = 0;
-  let weightedBlack = 0;
-  let weightedAsian = 0;
-  let weightedHispanic = 0;
+  // Calculate weighted averages
+  let weighted0k50k = 0;
+  let weighted50k100k = 0;
+  let weighted100k200k = 0;
+  let weighted200kmas = 0;
   let totalPopulation = 0;
 
-  let weightedWhite_inflow = 0;
-  let weightedBlack_inflow = 0;
-  let weightedAsian_inflow = 0;
-  let weightedHispanic_inflow = 0;
+  let weighted0k50kInflow = 0;
+  let weighted50k100kInflow = 0;
+  let weighted100k200kInflow = 0;
+  let weighted200kmasInflow = 0;
 
-  // Iterar sobre cada registro y calcular el valor ponderado
   dataFrame["total_population"].values.forEach((population: number, index: number) => {
-    weightedWhite += dataFrame["white"].values[index] * population;
-    weightedBlack += dataFrame["black"].values[index] * population;
-    weightedAsian += dataFrame["asian"].values[index] * population;
-    weightedHispanic += dataFrame["hispanic"].values[index] * population;
+    weighted0k50k += dataFrame["Under $50K"].values[index] * population;
+    weighted50k100k += dataFrame["$50K - $100K"].values[index] * population;
+    weighted100k200k += dataFrame["$100K - $200K"].values[index] * population;
+    weighted200kmas += dataFrame["Over $200K"].values[index] * population;
    
-    weightedWhite_inflow += dataFrame["white_inflow"].values[index] * population;
-    weightedBlack_inflow += dataFrame["black_inflow"].values[index] * population;
-    weightedAsian_inflow += dataFrame["asian_inflow"].values[index] * population;
-    weightedHispanic_inflow += dataFrame["hispanic_inflow"].values[index] * population;
+    weighted0k50kInflow += dataFrame["Under $50K_inflow"].values[index] * population;
+    weighted50k100kInflow += dataFrame["$50K - $100K_inflow"].values[index] * population;
+    weighted100k200kInflow += dataFrame["$100K - $200K_inflow"].values[index] * population;
+    weighted200kmasInflow += dataFrame["Over $200K_inflow"].values[index] * population;
 
     totalPopulation += population;
   });
 
-  // Datos para los gráficos
-  const raceData: PieData[] = [
-    { label: "White", value: (weightedWhite / totalPopulation) * 100, color: colors.white, key: "white" },
-    { label: "Black", value: (weightedBlack / totalPopulation) * 100, color: colors.black, key: "black" },
-    { label: "Asian", value: (weightedAsian / totalPopulation) * 100, color: colors.asian, key: "asian" },
-    { label: "Hispanic", value: (weightedHispanic / totalPopulation) * 100, color: colors.hispanic, key: "hispanic" }
+  // Data for pie charts
+  const incomeData: PieData[] = [
+    { label: "Under $50K", value: (weighted0k50k / totalPopulation) * 100, color: colors.under50k, key: "Under $50K" },
+    { label: "$50K - $100K", value: (weighted50k100k / totalPopulation) * 100, color: colors.fiftyTo100k, key: "$50K - $100K" },
+    { label: "$100K - $200K", value: (weighted100k200k / totalPopulation) * 100, color: colors.hundredTo200k, key: "$100K - $200K" },
+    { label: "Over $200K", value: (weighted200kmas / totalPopulation) * 100, color: colors.over200k, key: "Over $200K" }
   ];
 
   const inflowData: PieData[] = [
-    { label: "White Inflow", value: (weightedWhite_inflow / totalPopulation) * 100, color: colors.white, key: "white_inflow" },
-    { label: "Black Inflow", value: (weightedBlack_inflow / totalPopulation) * 100, color: colors.black, key: "black_inflow" },
-    { label: "Asian Inflow", value: (weightedAsian_inflow / totalPopulation) * 100, color: colors.asian, key: "asian_inflow" },
-    { label: "Hispanic Inflow", value: (weightedHispanic_inflow / totalPopulation) * 100, color: colors.hispanic, key: "hispanic_inflow" }
+    { label: "Under $50K Inflow", value: (weighted0k50kInflow / totalPopulation) * 100, color: colors.under50k, key: "Under $50K_inflow" },
+    { label: "$50K - $100K Inflow", value: (weighted50k100kInflow / totalPopulation) * 100, color: colors.fiftyTo100k, key: "$50K - $100K_inflow" },
+    { label: "$100K - $200K Inflow", value: (weighted100k200kInflow / totalPopulation) * 100, color: colors.hundredTo200k, key: "$100K - $200K_inflow" },
+    { label: "Over $200K Inflow", value: (weighted200kmasInflow / totalPopulation) * 100, color: colors.over200k, key: "Over $200K_inflow" }
   ];
 
-  // Configuración de los gráficos
+  // Chart configuration
   const width = 300;
   const height = 300;
   const radius = Math.min(width, height) / 2 - 20;
 
-  // Función para manejar el click en un segmento
   const handleSegmentClick = (data: PieData, isInflow: boolean) => {
     setSelectedData({
       dataFrame: dataFrame,
@@ -84,7 +82,6 @@ const Grafica: React.FC<Props> = ({ dataFrame }) => {
     });
   };
 
-  // Función para dibujar un gráfico de pastel con leyenda
   const drawPieChart = (
     svgRef: React.RefObject<SVGSVGElement>,
     legendRef: React.RefObject<HTMLDivElement>,
@@ -94,18 +91,18 @@ const Grafica: React.FC<Props> = ({ dataFrame }) => {
   ) => {
     if (!svgRef.current || !legendRef.current) return;
 
-    // Limpiar SVG y leyenda existentes
+    // Clear existing elements
     d3.select(svgRef.current).selectAll("*").remove();
     legendRef.current.innerHTML = '';
 
-    // Crear SVG
+    // Create SVG
     const svg = d3.select(svgRef.current)
       .attr("width", width)
       .attr("height", height + 40)
       .append("g")
       .attr("transform", `translate(${width / 2},${height / 2 + 20})`);
 
-    // Añadir título
+    // Add title
     svg.append("text")
       .attr("y", -height / 2 - 10)
       .attr("text-anchor", "middle")
@@ -114,13 +111,13 @@ const Grafica: React.FC<Props> = ({ dataFrame }) => {
       .style("font-weight", "bold")
       .style("fill", "#000");
 
-    // Crear el layout del pastel
+    // Create pie layout
     const pie = d3.pie<PieData>().value(d => d.value);
     const arc = d3.arc<d3.PieArcDatum<PieData>>()
       .innerRadius(0)
       .outerRadius(radius);
 
-    // Dibujar los segmentos con interacción
+    // Draw segments with interaction
     const arcs = svg.selectAll("arc")
       .data(pie(data))
       .enter()
@@ -141,7 +138,7 @@ const Grafica: React.FC<Props> = ({ dataFrame }) => {
         d3.select(this).attr("opacity", 1);
       });
 
-    // Añadir porcentajes dentro de las porciones
+    // Add percentages inside slices
     arcs.append("text")
       .attr("transform", d => `translate(${arc.centroid(d)})`)
       .attr("text-anchor", "middle")
@@ -149,7 +146,7 @@ const Grafica: React.FC<Props> = ({ dataFrame }) => {
       .style("font-size", "10px")
       .style("fill", "#fff");
 
-    // Crear leyenda interactiva
+    // Create interactive legend
     const legend = d3.select(legendRef.current)
       .style("display", "flex")
       .style("flex-direction", "column")
@@ -180,10 +177,10 @@ const Grafica: React.FC<Props> = ({ dataFrame }) => {
     });
   };
 
-  // Dibujar los gráficos cuando los datos cambien
+  // Draw charts when data changes
   useEffect(() => {
-    drawPieChart(svgRef1, legendRef1, raceData, "Distribución Racial", false);
-    drawPieChart(svgRef2, legendRef2, inflowData, "Distribución Inflow", true);
+    drawPieChart(svgRef1, legendRef1, incomeData, "Income Distribution", false);
+    drawPieChart(svgRef2, legendRef2, inflowData, "Income Inflow Distribution", true);
   }, [dataFrame]);
 
   return (
@@ -218,4 +215,4 @@ const Grafica: React.FC<Props> = ({ dataFrame }) => {
   );
 };
 
-export default Grafica;
+export default Grafica2;

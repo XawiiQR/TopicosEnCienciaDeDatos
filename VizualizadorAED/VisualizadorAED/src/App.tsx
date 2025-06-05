@@ -35,9 +35,9 @@ const App: React.FC = () => {
         </div>
 
         <div className="botonera">
-          <button onClick={() => setActiveButton("Botón 1")}>Botón 1</button>
-          <button onClick={() => setActiveButton("Botón 2")}>Botón 2</button>
-          <button onClick={() => setActiveButton("Botón 3")}>Botón 3</button>
+          <button onClick={() => setActiveButton("Botón 1")}>Atributos</button>
+          <button onClick={() => setActiveButton("Botón 2")}>Registros</button>
+          <button onClick={() => setActiveButton("Botón 3")}>Relaciones</button>
         </div>
       </div>
 

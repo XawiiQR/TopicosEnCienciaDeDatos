@@ -11,6 +11,7 @@
 .left-side {
   flex: 0.1; /* Ocupa el 50% del espacio */
   padding: 20px;
+  background-color: #3c6ac0;
   overflow: auto;
 }
 
@@ -18,7 +19,7 @@
 .right-side {
   flex: 1; /* Ocupa el 50% del espacio */
   padding: 20px;
-  background-color: #3c6ac0; /* Puedes ponerle un color de fondo si lo deseas */
+  background-color: #3b5077; /* Puedes ponerle un color de fondo si lo deseas */
   overflow: auto;
 }
 /* Contenedor del DanfoExample */

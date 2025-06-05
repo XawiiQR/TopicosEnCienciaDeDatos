@@ -3,7 +3,8 @@ import * as dfd from "danfojs";
 import Mapa from "./Mapa"; // Asegúrate de tener este archivo
 import Grafica from "./Grafica"; // Asegúrate de tener este archivo
 import "./Componente1.css";
-
+import Grafica2 from "./Grafica2";
+import Grafica3 from "./Grafica3";
 interface Props {
   dataFrame: dfd.DataFrame;
 }
@@ -51,10 +52,12 @@ const Componente1: React.FC<Props> = ({ dataFrame }) => {
       <div>
         {/* Mostrar el componente basado en el botón presionado */}
         {selectedComponent === "Geo" && <Mapa dataFrame={dataFrame} />}
-        {selectedComponent !== "Geo" && selectedComponent && (
-          <Grafica dataFrame={dataFrame} />
-        )}
+        {selectedComponent === "Racial" && <Grafica dataFrame={dataFrame} />}
+        {selectedComponent === "Income" && <Grafica2 dataFrame={dataFrame} />}
+        {selectedComponent === "PI" && <Grafica3 dataFrame={dataFrame} />}
       </div>
+
+      
 
       <h3>Componente 1</h3>
       <p>Filas: {dataFrame.shape[0]}</p>
@@ -65,6 +68,8 @@ const Componente1: React.FC<Props> = ({ dataFrame }) => {
       <pre style={{ whiteSpace: "pre-wrap" }}>
         {dataFrame.head(3).toString()}
       </pre>
+
+      
     </div>
   );
 };

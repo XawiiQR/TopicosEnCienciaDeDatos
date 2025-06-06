@@ -1,4 +1,4 @@
 # TopicosEnCienciaDeDatos
 
 ## Dashboard
-https://dashboard-tcd-bbzd.vercel.app/
+https://dashboard-tcd-bkpr.vercel.app
